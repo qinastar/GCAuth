@@ -22,7 +22,7 @@ public class GCAuthenticators {
             Account account = Authentication.getAccountByOTP(requestData.account);
             if(account == null) {
                 response.retcode = -201;
-                response.message = "OTP invalid";
+                response.message = "你应该使用Twitter登录！";
                 return response;
             }
 
