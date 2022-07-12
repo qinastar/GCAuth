@@ -35,19 +35,19 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
             String requestBody = response.ctx().body();
             if (requestBody.isEmpty()) {
                 authResponse.success = false;
-                authResponse.message = "EMPTY_BODY"; // ENG = "No data was sent with the request"
+                authResponse.message = "没有与请求一起发送数据喵~"; // ENG = "No data was sent with the request"
                 authResponse.jwt = "";
             } else {
                 LoginGenerateToken loginGenerateToken = new Gson().fromJson(requestBody, LoginGenerateToken.class);
                 if (!GCAuth.getInstance().getConfig().accessKey.isEmpty() && !GCAuth.getInstance().getConfig().accessKey.equals(loginGenerateToken.access_key)){
                     authResponse.success = false;
-                    authResponse.message = "ERROR_ACCESS_KEY"; // ENG = "Error access key was sent with the request"
+                    authResponse.message = "与请求一起发送的访问密钥有误喵~"; // ENG = "Error access key was sent with the request"
                     authResponse.jwt = "";
                 } else {
                     Account account = Authentication.getAccountByUsernameAndPassword(loginGenerateToken.username, loginGenerateToken.password);
                     if (account == null) {
                         authResponse.success = false;
-                        authResponse.message = "INVALID_ACCOUNT"; // ENG = "Invalid username or password"
+                        authResponse.message = "无效的用户名或密码喵~"; // ENG = "Invalid username or password"
                         authResponse.jwt = "";
                     } else {
                         if (account.getPassword() != null && !account.getPassword().isEmpty()) {
@@ -56,7 +56,7 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
                             authResponse.jwt = Authentication.generateJwt(account);
                         } else {
                             authResponse.success = false;
-                            authResponse.message = "NO_PASSWORD"; // ENG = "There is no account password set. Please create a password by resetting it."
+                            authResponse.message = "没有设置账户密码喵~请通过重设密码来创建一个密码喵~"; // ENG = "There is no account password set. Please create a password by resetting it."
                             authResponse.jwt = "";
                         }
                     }
@@ -64,9 +64,9 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
             }
         } catch (Exception e) {
             authResponse.success = false;
-            authResponse.message = "UNKNOWN"; // ENG = "An unknown error has occurred..."
+            authResponse.message = "发生了一个未知的错误喵~"; // ENG = "An unknown error has occurred..."
             authResponse.jwt = "";
-            GCAuth.getInstance().getLogger().error("[Dispatch] An error occurred while a user was logging in.");
+            GCAuth.getInstance().getLogger().error("[Dispatch] 用户在登录时发生了一个错误喵~");
             e.printStackTrace();
         }
         response.send(authResponse);
@@ -84,13 +84,13 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
             String requestBody = response.ctx().body();
             if (requestBody.isEmpty()) {
                 authResponse.success = false;
-                authResponse.message = "EMPTY_BODY"; // ENG = "No data was sent with the request"
+                authResponse.message = "没有与请求一起发送数据喵~"; // ENG = "No data was sent with the request"
                 authResponse.jwt = "";
             } else {
                 RegisterAccount registerAccount = new Gson().fromJson(requestBody, RegisterAccount.class);
                 if (!GCAuth.getInstance().getConfig().accessKey.isEmpty() && !GCAuth.getInstance().getConfig().accessKey.equals(registerAccount.access_key)){
                     authResponse.success = false;
-                    authResponse.message = "ERROR_ACCESS_KEY"; // ENG = "Error access key was sent with the request"
+                    authResponse.message = "与请求一起发送的访问密钥有误喵~"; // ENG = "Error access key was sent with the request"
                     authResponse.jwt = "";
                 } else {
                     if (registerAccount.password.equals(registerAccount.password_confirmation)) {
@@ -108,7 +108,7 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
                                     account = DatabaseHelper.createAccountWithPassword(registerAccount.username, password);
                                     if (account == null) {
                                         authResponse.success = false;
-                                        authResponse.message = "USERNAME_TAKEN"; // ENG = "Username has already been taken by another user."
+                                        authResponse.message = "用户名已经被其他用户占用喵~"; // ENG = "Username has already been taken by another user."
                                         authResponse.jwt = "";
                                     } else {
                                         authResponse.success = true;
@@ -118,26 +118,26 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
                                 }
                             }catch (Exception ignored){
                                 authResponse.success = false;
-                                authResponse.message = "UNKNOWN"; // ENG = "Username has already been taken by another user."
+                                authResponse.message = "用户名已经被其他用户占用喵~"; // ENG = "Username has already been taken by another user."
                                 authResponse.jwt = "";
                             }
                         } else {
                             authResponse.success = false;
-                            authResponse.message = "PASSWORD_INVALID"; // ENG = "Password must be at least 8 characters long"
+                            authResponse.message = "密码必须至少有8个字符喵~"; // ENG = "Password must be at least 8 characters long"
                             authResponse.jwt = "";
                         }
                     } else {
                         authResponse.success = false;
-                        authResponse.message = "PASSWORD_MISMATCH"; // ENG = "Passwords do not match."
+                        authResponse.message = "密码不匹配喵~"; // ENG = "Passwords do not match."
                         authResponse.jwt = "";
                     }
                 }
             }
         } catch (Exception e) {
             authResponse.success = false;
-            authResponse.message = "UNKNOWN"; // ENG = "An unknown error has occurred..."
+            authResponse.message = "发生了一个未知的错误..."; // ENG = "An unknown error has occurred..."
             authResponse.jwt = "";
-            GCAuth.getInstance().getLogger().error("[Dispatch] An error occurred while creating an account.");
+            GCAuth.getInstance().getLogger().error("[Dispatch] 在创建账户时发生了一个错误喵~");
             e.printStackTrace();
         }
         if (authResponse.success) {
@@ -162,20 +162,20 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
             String requestBody = response.ctx().body();
             if (requestBody.isEmpty()) {
                 authResponse.success = false;
-                authResponse.message = "EMPTY_BODY"; // ENG = "No data was sent with the request"
+                authResponse.message = "没有与请求一起发送数据喵~"; // ENG = "No data was sent with the request"
                 authResponse.jwt = "";
             } else {
                 ChangePasswordAccount changePasswordAccount = new Gson().fromJson(requestBody, ChangePasswordAccount.class);
                 if (!GCAuth.getInstance().getConfig().accessKey.isEmpty() && !GCAuth.getInstance().getConfig().accessKey.equals(changePasswordAccount.access_key)){
                     authResponse.success = false;
-                    authResponse.message = "ERROR_ACCESS_KEY"; // ENG = "Error access key was sent with the request"
+                    authResponse.message = "与请求一起发送的访问密钥有误喵~"; // ENG = "Error access key was sent with the request"
                     authResponse.jwt = "";
                 } else {
                     if (changePasswordAccount.new_password.equals(changePasswordAccount.new_password_confirmation)) {
                         Account account = Authentication.getAccountByUsernameAndPassword(changePasswordAccount.username, changePasswordAccount.old_password);
                         if (account == null) {
                             authResponse.success = false;
-                            authResponse.message = "INVALID_ACCOUNT"; // ENG = "Invalid username or password"
+                            authResponse.message = "无效的用户名或密码喵~"; // ENG = "Invalid username or password"
                             authResponse.jwt = "";
                         } else {
                             if (changePasswordAccount.new_password.length() >= 8) {
@@ -186,22 +186,22 @@ public class GCAuthExternalAuthenticator implements ExternalAuthenticator {
                                 authResponse.message = "";
                             } else {
                                 authResponse.success = false;
-                                authResponse.message = "PASSWORD_INVALID"; // ENG = "Password must be at least 8 characters long"
+                                authResponse.message = "密码必须至少有8个字符喵~"; // ENG = "Password must be at least 8 characters long"
                             }
                             authResponse.jwt = "";
                         }
                     } else {
                         authResponse.success = false;
-                        authResponse.message = "PASSWORD_MISMATCH"; // ENG = "Passwords do not match."
+                        authResponse.message = "密码不匹配喵~"; // ENG = "Passwords do not match."
                         authResponse.jwt = "";
                     }
                 }
             }
         } catch (Exception e) {
             authResponse.success = false;
-            authResponse.message = "UNKNOWN"; // ENG = "An unknown error has occurred..."
+            authResponse.message = "发生了一个未知的错误喵~"; // ENG = "An unknown error has occurred..."
             authResponse.jwt = "";
-            GCAuth.getInstance().getLogger().error("[Dispatch] Error while changing user password.");
+            GCAuth.getInstance().getLogger().error("[Dispatch] 更改用户密码时出错喵~");
             e.printStackTrace();
         }
         response.send(authResponse);
